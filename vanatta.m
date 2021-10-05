@@ -4,30 +4,33 @@
 % Author : Benjamin Herber %
 % Date   : Fall 2021       %
 % ------------------------ %
+clear
+clc
 %% Constants
 LIGHTSPEED = physconst('Lightspeed');
 
-DEFAULT_THETA_IMPINGING = pi/4;
+DEFAULT_THETA_IMPINGING = pi/2;
 DEFAULT_NUM_ELEMENTS = 8;
 DEFAULT_WAVELEN = LIGHTSPEED/2.4E9;
 DEFAULT_SPACING = DEFAULT_WAVELEN/2.0;
-find_phases = @priv_find_phases;
+DEFAULT_PHASES = zeros(DEFAULT_NUM_ELEMENTS,1);
+find_reflectedE = @priv_reflected_E;
 
-res = find_phases(DEFAULT_THETA_IMPINGING, DEFAULT_NUM_ELEMENTS, DEFAULT_WAVELEN, DEFAULT_SPACING, 10);
+%% Find phase change 
 
-%% Find phase change vector
+function phase = find_phase(theta, wavelen, spacing, n)
+    phase = ((2.0*pi)/wavelen)*spacing*n*cos(theta);
+end
 
-function phases = priv_find_phases(theta_impinging, num_elements, wavelen, spacing, obsrv_dist)
-    tmp = zeros(num_elements,1);
-    running_sum = 0;
+%% Find reflection
+
+function resE = priv_reflected_E(incoming_E, num_elements, wavelen, spacing, theta_impinging, theta_obs)
+    tmp = 0;
     for idx = 1:num_elements
-        tmp(idx) = (2*pi)-(((2*pi)/wavelen)*(obsrv_dist+...
-            ((idx-1)*(spacing)*cos(theta_impinging))))+...
-            running_sum;
-        running_sum = running_sum + tmp(idx);
+        tmp = tmp + exp(1i*(find_phase(theta_obs, wavelen, spacing, (idx-1))-find_phase(theta_impinging, wavelen, spacing, (idx-1))));
     end
 
-    phases = tmp;
+    resE = incoming_E*tmp;
 end
 
 
