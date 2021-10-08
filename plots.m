@@ -12,11 +12,9 @@ vanatta;
 %% Plot theta dependence
 
 fig = figure;
-P = 0;
 
 array_factor = zeros(1,360);
 angles = zeros(1,360);
-i = sqrt(-1);
 theta_imps = [0, pi/4, pi/3, pi/2, 2*pi/3, 3*pi/4, pi];
 num_steps = 7;
 
@@ -32,7 +30,7 @@ for idx = 1:num_steps
     polarplot(angles, array_factor);
 
     pp = gca;
-    title("Array Factor for \theta_i: " + rad2deg(theta_imp) + "°")
+    title("Reflected Radiation (8 Elements at \lambda/2) for \theta_i: " + rad2deg(theta_imp) + "°")
     pp.FontSize = 14;
     pp.ThetaAxisUnits = 'radians';
     thetaticks([0, pi/4, pi/3, pi/2, 2*pi/3, 3*pi/4, pi, 5*pi/4, 4*pi/3, 3*pi/2, 5*pi/3, 7*pi/4, 2*pi])
@@ -62,11 +60,9 @@ clc
 vanatta;
 
 fig = figure;
-P = 0;
 
 array_factor = zeros(1,360);
 angles = zeros(1,360);
-i = sqrt(-1);
 testwavelen = DEFAULT_WAVELEN;
 spacings = 0:(testwavelen/16.0):(2.0*testwavelen);
 num_steps = length(spacings);
@@ -83,7 +79,7 @@ for idx = 1:num_steps
     polarplot(angles, array_factor);
 
     pp = gca;
-    title("Array Factor (\theta_i=90°) for Spacing: " + ((spacing) / testwavelen) + "\lambda")
+    title("Reflected Radiation (\theta_i=90°) (8 Elements) for Spacing: " + ((spacing) / testwavelen) + " * \lambda")
     pp.FontSize = 14;
     pp.ThetaAxisUnits = 'radians';
     thetaticks([0, pi/4, pi/3, pi/2, 2*pi/3, 3*pi/4, pi, 5*pi/4, 4*pi/3, 3*pi/2, 5*pi/3, 7*pi/4, 2*pi])
@@ -107,19 +103,15 @@ end
 
 %% Test Number of Elements Dependency
 
-%% Test Spacing Difference
-
 clear
 clc
 
 vanatta;
 
 fig = figure;
-P = 0;
 
 array_factor = zeros(1,360);
 angles = zeros(1,360);
-i = sqrt(-1);
 elements = 0:2:32;
 num_steps = length(elements);
 
@@ -135,7 +127,7 @@ for idx = 1:num_steps
     polarplot(angles, array_factor);
 
     pp = gca;
-    title("Array Factor (\theta_i=90°), (spacing=\lambda/2) for " + num_ele + "Elements")
+    title("Reflected Radiation(\theta_i=90°), (spacing=\lambda/2) for " + num_ele + " Elements")
     pp.FontSize = 14;
     pp.ThetaAxisUnits = 'radians';
     thetaticks([0, pi/4, pi/3, pi/2, 2*pi/3, 3*pi/4, pi, 5*pi/4, 4*pi/3, 3*pi/2, 5*pi/3, 7*pi/4, 2*pi])
